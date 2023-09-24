@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import './Login.css';
+
+import { UserContext } from '../../context/UserContext';
+import { useContext } from 'react';
+
 import axios from 'axios';
 
 const Login = () => {
+    const { isLoggedIn, userr, checkUserLoggedIn, handleLogout } = useContext(UserContext);
+
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -12,10 +18,6 @@ const Login = () => {
     const [password1, setPassword1] = useState("");
     const [phone1, setPhone1] = useState("");
     const [name1, setName1] = useState("");
-
-
-    // const [location, setLocation] = useState(null);
-
 
     // Register action
     const handleClick1 = async (e) => {
@@ -78,10 +80,9 @@ const Login = () => {
                 withCredentials: true,
                 credentials: "include",
             });
-            console.log(response.data);
+            checkUserLoggedIn();
             console.log("Login succesful");
             navigate("/");
-            window.location.reload();
         } catch (error) {
             console.error(error.response);
         }

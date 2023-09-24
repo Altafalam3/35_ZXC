@@ -1,15 +1,15 @@
-import { useState } from 'react';
 import './Navbar.css';
 import Navbarlist from './Navbarlist';
+import { UserContext } from '../../context/UserContext';
+import { useContext } from 'react';
+
 import { Link, useLocation } from 'react-router-dom';
 
-const Navbar = () => {
-  const location = useLocation();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleSignOut = () => {
-    setIsLoggedIn(!isLoggedIn);
-  };
+const Navbar = () => {
+  const { isLoggedIn, userr, checkUserLoggedIn, handleLogout } = useContext(UserContext);
+
+  const location = useLocation();
 
   const isLoginPage = location.pathname === '/login';
 
@@ -18,8 +18,8 @@ const Navbar = () => {
       return (
         <div className="ml-auto">
           {isLoginPage ? null : (
-            <button onClick={handleSignOut} className="login-button">
-              <Link to="/login">Sign out</Link>
+            <button onClick={handleLogout} className="login-button">
+              <Link to="/">Sign out</Link>
             </button>
           )}
         </div>
@@ -28,7 +28,7 @@ const Navbar = () => {
       return (
         <div className="ml-auto">
           {isLoginPage ? null : (
-            <button onClick={handleSignOut} className="login-button">
+            <button className="login-button">
               <Link to="/login">Sign in</Link>
             </button>
           )}
@@ -41,7 +41,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="logo-links">
         <h2>
-          <Link to="/" style={{textDecoration:'none', color:'indigo'}}>SmartLegalX</Link>          
+          <Link to="/" style={{textDecoration:'none', color:'indigo'}}>SmartLegalX</Link>
         </h2>
         <ul className="navitems">
           <Navbarlist />

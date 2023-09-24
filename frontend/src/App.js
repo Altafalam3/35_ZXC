@@ -8,31 +8,29 @@ import Lawyerform from './Pages/Lawyerform/Lawyerform.js'
 import Home from './Pages/Home/Home';
 import Docum from './Pages/Docum/Docum.js';
 import Advocate from './Pages/Advocate/Advocate.js';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { UserProvider } from './context/UserContext';
 
 function App() {
-  // const location = useLocation();
-  // const currentRoute = location.pathname;
-
-  // Conditionally render the Navbar based on the route
-  // const renderNavbar = currentRoute !== '/login';
 
   return (
-    <>
-      <BrowserRouter>
-        <Navbar />{/* Conditional rendering of Navbar */}
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/docum" element={<Docum />} />
-          <Route path="/textsum" element={<Textsummarizer />} />
-          <Route path="/resource" element={<Resources />} />
-          <Route path="/lawyer" element={<Lawyerform />} />
-          <Route path="/lawyers" element={<Advocate />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
-    </>
+    <UserProvider>
+      <>
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/docum" element={<Docum />} />
+            <Route path="/textsum" element={<Textsummarizer />} />
+            <Route path="/resource" element={<Resources />} />
+            <Route path="/lawyer" element={<Lawyerform />} />
+            <Route path="/lawyers" element={<Advocate />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </>
+    </UserProvider>
   );
 }
 
