@@ -3,8 +3,8 @@ import "./Textsummarizer.css";
 import axios from "axios";
 
 function Textsummarizer() {
-  // const messageInputRef = useRef(null);
-  // const fileInputRef = useRef(null);
+  const messageInputRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
@@ -96,7 +96,7 @@ function Textsummarizer() {
             value={inputText}
             onChange={handleInputChange}
           ></textarea>
-          {/* <div className="my-4 uploads">
+          <div className="my-4 uploads">
             <label htmlFor="myfile" className="mx-4">
               <u>Select a file (PDF format):</u>
             </label>
@@ -106,7 +106,7 @@ function Textsummarizer() {
               accept=".pdf"
               onChange={handlePDFChange}
             />
-          </div> */}
+          </div>
         </div>
 
         <div>
@@ -119,13 +119,14 @@ function Textsummarizer() {
             {isLoading ? "Summarizing..." : "Summarize Text"}
           </button>
 
-          {/* <button
+          <button
             type="button"
             className="btn btn-primary my-4 mx-5"
             id="send-btn"
+            onClick={summarizeDoc}
           >
             {isLoading ? "Summarizing..." : "Summarize Doc"}
-          </button> */}
+          </button>
 
           <button
             type="button"

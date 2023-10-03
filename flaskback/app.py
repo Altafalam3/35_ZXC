@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import flask_cors
 from transformers import pipeline
-import fitz  # PyMuPDF library for PDF text extraction
+import fitz  # also install PyMuPDF library for PDF text extraction
 import os
 import traceback
 
@@ -16,7 +16,7 @@ CORS(app, expose_headers='Authorization')
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app.secret_key = "secret key"
 app.config['UPLOAD_FOLDER'] = "D:/35_ZXC/flaskback/assets"
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
 
 summarizer = pipeline("summarization", model="t5-base")
 
@@ -30,7 +30,7 @@ def summarize_text():
     try:
         article = request.json.get('article')
         if not article:
-            return jsonify({'error': 'Empty input'})
+            return jsonify({'error': 'Empty input'}), 500
 
         # Perform summarization using the pipeline
         summary = summarizer(article, max_length=130, min_length=30, do_sample=False)
@@ -52,16 +52,12 @@ def upload_file():
     try:
         # Check if the post request has the file part
         if 'file' not in request.files:
-            resp = jsonify({'message': 'No file part in the request'})
-            resp.status_code = 400
-            return resp
+            return jsonify({'message': 'No file part in the request'}), 400
 
         file = request.files['file']
 
         if file.filename == '':
-            resp = jsonify({'message': 'No file selected for uploading'})
-            resp.status_code = 400
-            return resp
+            return jsonify({'message': 'No file selected for uploading'}), 400
 
         if file and allowed_file(file.filename):
             try:
@@ -76,26 +72,20 @@ def upload_file():
                     page = pdf.load_page(page_num)
                     text += page.get_text()
 
+                # text = text.strip()
                 # Perform summarization using the pipeline
                 summary = summarizer(text, max_length=130, min_length=30, do_sample=False)
 
                 # Extract the summary text from the result
                 summary_text = summary[0]['summary_text']
 
-                resp = jsonify({'message': 'File successfully uploaded and summarized', 'summary': summary_text})
-                resp.status_code = 201
-                return resp
+                return jsonify({'message': 'File successfully uploaded and summarized', 'summary': summary_text}),200
             except Exception as e:
-                resp = jsonify({'message': 'Error processing the uploaded file', 'error': str(e)})
-                resp.status_code = 500
-                return resp
+                return jsonify({'message': 'Error processing the uploaded file', 'error': str(e)}), 500
         else:
-            resp = jsonify({'message': 'Allowed file types are txt, pdf, png, jpg, jpeg, gif'})
-            resp.status_code = 400
-            return resp
+            return jsonify({'message': 'Allowed file types are txt, pdf, png, jpg, jpeg, gif'}), 400
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
 
 
 
@@ -225,6 +215,6 @@ def anti_ragging_document():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host="0.0.0.0",use_reloader=False)
+    app.run(debug=True , port=5000, host="0.0.0.0")
 
 flask_cors.CORS(app, expose_headers='Authorization')
