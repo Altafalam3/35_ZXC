@@ -1,10 +1,9 @@
-from langchain.embeddings import HuggingFaceEmbeddings
-from langchain.vectorstores import FAISS
-from langchain.document_loaders import PyPDFLoader, DirectoryLoader
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain_community.document_loaders import PyPDFLoader, DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter 
 
-# DATA_PATH = 'D:/technovate/SmartLeagalX_chatbot/data'
-DATA_PATH = 'D:/35_ZXC/model/data'
+DATA_PATH = 'D:/SmartLegalX/model/data'
 DB_FAISS_PATH = 'vectorstore/db_faiss'
 
 # Create vector database

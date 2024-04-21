@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
-import flask_cors
 from transformers import pipeline
 import fitz  # also install PyMuPDF library for PDF text extraction
 import os
@@ -15,7 +14,7 @@ CORS(app, expose_headers='Authorization')
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app.secret_key = "secret key"
-app.config['UPLOAD_FOLDER'] = "D:/35_ZXC/flaskback/assets"
+app.config['UPLOAD_FOLDER'] = "D:/SmartLegalX/flaskback/assets"
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
 
 summarizer = pipeline("summarization", model="t5-base")
@@ -216,5 +215,3 @@ def anti_ragging_document():
 
 if __name__ == '__main__':
     app.run(debug=True , port=5000, host="0.0.0.0")
-
-flask_cors.CORS(app, expose_headers='Authorization')
